@@ -5,7 +5,7 @@ def filter_data(location:str, output:str, query:str, test_run=False, chunk=10000
     data_slice = pd.DataFrame()
     with pd.read_csv(location, chunksize=chunk, sep=sep, header=0) as reader:
         if test_run:
-            data_slice = data_slice._append(reader.get_chunk(10000).query(query))
+            data_slice = data_slice._append(reader.get_chunk(chunk).query(query))
         else:
             for chunk in reader:
                 data_slice = data_slice._append(chunk.query(query))
@@ -13,6 +13,10 @@ def filter_data(location:str, output:str, query:str, test_run=False, chunk=10000
     # Save the data to a csv file
     data_slice.to_csv(output)
     return data_slice
+
+
+
+
 
 if __name__ == '__main__':
     import argparse
